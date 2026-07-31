@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "omega-federation-core"
+version = "0.1.0"
+description = "Commit 001 — Sovereign Runtime Foundation"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.11"
+authors = [{name = "VrtxOmega", email = "omega@sovereign.dev"}]
+keywords = ["omega", "federation", "runtime", "orchestration", "sovereign"]
+classifiers = [
+"Development Status :: 3 - Alpha",
+"Intended Audience :: Developers",
+"License :: OSI Approved :: MIT License",
+"Programming Language :: Python :: 3.11",
+"Programming Language :: Python :: 3.12",
+]
+
+dependencies = [
+"cryptography>=42.0.0",
+"websockets>=12.0",
+"aiohttp>=3.9.0",
+"pydantic>=2.5.0",
+"click>=8.1.0",
+"rich>=13.7.0",
+"pyyaml>=6.0",
+"python-dotenv>=1.0.0",
+]
+
+[project.scripts]
+omega = "omega.main:main"
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0.0", "pytest-asyncio>=0.23.0"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["omega*"]
