@@ -1,0 +1,89 @@
+# Omega Federation Core — Runtime Configuration
+
+runtime:
+  name: "omega-core"
+  data_dir: "~/.omega"
+  log_level: "INFO"
+  max_events_in_memory: 10000
+
+bus:
+  max_queue_size: 1000
+  dispatch_timeout: 30.0
+
+ledger:
+  engine: "sha3_256"
+  max_entries_per_file: 5000
+  archive_after_entries: 100000
+
+checkpoint:
+  interval_seconds: 300
+  max_checkpoints: 10
+  compress: true
+
+transport:
+  http:
+    enabled: true
+    host: "0.0.0.0"
+    port: 7777
+  websocket:
+    enabled: true
+    host: "0.0.0.0"
+    port: 7778
+    ping_interval: 20
+    ping_timeout: 10
+
+federation:
+  enabled: false
+  bootstrap_peers: []
+  fanout: 3
+  gossip_interval: 5.0
+
+permissions:
+  default_policy: "deny"
+  capabilities:
+    - name: "system.read"
+      description: "Read system state"
+    - name: "system.write"
+      description: "Write system state"
+    - name: "connector.execute"
+      description: "Execute connector actions"
+    - name: "federation.join"
+      description: "Join federation mesh"
+    - name: "ledger.read"
+      description: "Read ledger entries"
+    - name: "ledger.write"
+      description: "Write to ledger"
+    - name: "filesystem.read"
+      description: "Read files and directories"
+    - name: "filesystem.write"
+      description: "Write files and directories"
+    - name: "http.request"
+      description: "Make HTTP requests"
+    - name: "git.read"
+      description: "Read git repository state"
+    - name: "git.write"
+      description: "Write to git repositories"
+
+connectors:
+  autoload:
+    - "omega.connectors.filesystem"
+    - "omega.connectors.http_client"
+    - "omega.connectors.git"
+  config:
+    filesystem:
+      base_dir: "~"
+      allow_write: true
+      max_file_size_mb: 100
+    http_client:
+      timeout: 30
+      max_retries: 3
+      user_agent: "Omega-Core/0.1.0"
+    git:
+      default_author: "Omega Runtime <omega@sovereign.dev>"
+      ssh_key_path: "~/.ssh/id_rsa"
+      allow_push: true
+
+supervisor:
+  restart_policy: "exponential_backoff"
+  max_restarts: 5
+  restart_window: 60
